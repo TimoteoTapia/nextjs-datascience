@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import Header from '@/components/Header';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -15,9 +14,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Web app Data Science',
-  description:
-    'The Site is dedicated to provide informacion related data science courses',
+  title: 'DataScience Academy',
+  description: 'Accelerate your career with professional data science courses',
 };
 
 export default function RootLayout({
