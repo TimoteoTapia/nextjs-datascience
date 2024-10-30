@@ -5,6 +5,7 @@ import { Mail, Lock, User } from 'lucide-react';
 import AuthLayout from '@/components/AuthLayout';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { signUp } from '@/app/lib/auth'; // Añade esta importación
 
 export default function SignupPage() {
   const router = useRouter();
@@ -64,13 +65,23 @@ export default function SignupPage() {
 
     if (validateForm()) {
       try {
-        // This is where your signup logic would go (e.g., API call)
-        console.log('Signup attempt with:', formData);
+        const result = await signUp({
+          fullName: formData.fullName,
+          email: formData.email,
+          password: formData.password,
+        });
 
-        // Redirect the user to the login page after successful signup
-        router.push('/login');
-      } catch (error) {
+        if (result.success) {
+          router.push('/login');
+        }
+      } catch (error: unknown) {
         console.error('Signup error:', error);
+        //optional: show error message to user
+        setErrors((prev) => ({
+          ...prev,
+          email:
+            error instanceof Error ? error.message : 'Error creating account',
+        }));
       }
     }
   };

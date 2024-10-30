@@ -5,6 +5,7 @@ import { Mail, Lock } from 'lucide-react';
 import AuthLayout from '@/components/AuthLayout';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { login } from '@/app/lib/auth';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -16,6 +17,8 @@ export default function LoginPage() {
     email: '',
     password: '',
   });
+
+  const [generalError, setGeneralError] = useState('');
 
   const validateForm = () => {
     let isValid = true;
@@ -43,16 +46,23 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    setGeneralError('');
     if (validateForm()) {
       try {
-        // Login logic would go (e.g., API call)
-        console.log('Signup attempt with:', formData);
+        const result = await login({
+          email: formData.email,
+          password: formData.password,
+        });
 
-        // Redirect the user to the login page after successful signup
-        router.push('/program');
-      } catch (error) {
-        console.error('Signup error:', error);
+        if (result.success) {
+          router.push('/program');
+        }
+      } catch (error: unknown) {
+        console.error('Login error:', error);
+        // Optional: Show error message to user
+        setGeneralError(
+          error instanceof Error ? error.message : 'Error al iniciar sesión'
+        );
       }
     }
   };
@@ -63,6 +73,11 @@ export default function LoginPage() {
         <h2 className='text-2xl font-bold text-white text-center mb-6'>
           Login to your account
         </h2>
+        {generalError && (
+          <div className='p-3 mb-4 text-sm text-red-500 bg-red-100 rounded-md'>
+            {generalError}
+          </div>
+        )}
         <form className='space-y-6' onSubmit={handleSubmit}>
           <div>
             <label className='block text-gray-400 mb-2'>Email</label>
