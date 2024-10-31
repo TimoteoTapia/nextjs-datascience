@@ -37,4 +37,4 @@ To run a local test server:
 
 # Proyect Deployed
 
-You can see the project [Web Site DataSicence](https://nextjs-datascience-gdrmrvxw0-timoteos-projects.vercel.app/)
+You can see the project [Web Site DataSicence](https://nextjs-datascience.vercel.app/)
